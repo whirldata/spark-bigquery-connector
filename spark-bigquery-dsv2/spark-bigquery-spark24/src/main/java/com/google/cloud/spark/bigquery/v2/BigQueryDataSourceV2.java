@@ -26,7 +26,6 @@ import com.google.cloud.spark.bigquery.common.GenericDataSourceHelperClass;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import java.util.Map;
 import java.util.Optional;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
@@ -61,8 +60,7 @@ public class BigQueryDataSourceV2
     return SparkSession.builder().appName("spark-bigquery-connector").getOrCreate();
   }
   // This method is used to create injection by providing
-  public Injector createInjector(
-      StructType schema, DataSourceOptions options, Module module) {
+  public Injector createInjector(StructType schema, DataSourceOptions options, Module module) {
     SparkSession spark = getDefaultSparkSessionOrCreate();
     return Guice.createInjector(
         new BigQueryClientModule(),
