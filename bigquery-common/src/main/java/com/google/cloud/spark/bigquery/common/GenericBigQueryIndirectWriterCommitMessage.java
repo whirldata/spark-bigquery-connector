@@ -1,6 +1,8 @@
 package com.google.cloud.spark.bigquery.common;
 
-public class GenericBigQueryIndirectWriterCommitMessage {
+import java.io.Serializable;
+
+public class GenericBigQueryIndirectWriterCommitMessage implements Serializable {
   private final String uri;
 
   public GenericBigQueryIndirectWriterCommitMessage(String uri) {

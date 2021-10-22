@@ -5,7 +5,9 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-public class GenericBigQueryIndirectDataWriter {
+import java.io.Serializable;
+
+public class GenericBigQueryIndirectDataWriter implements Serializable {
   Path path;
   FileSystem fs;
   FSDataOutputStream outputStream;

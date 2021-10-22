@@ -8,6 +8,7 @@ import com.google.protobuf.ByteString;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,7 @@ import org.apache.arrow.vector.ipc.ArrowReader;
 import org.apache.arrow.vector.ipc.ArrowStreamReader;
 import org.apache.arrow.vector.types.pojo.Schema;
 
-public class GenericArrowColumnBatchPartitionReader {
+public class GenericArrowColumnBatchPartitionReader implements Serializable {
   private static final long maxAllocation = 500 * 1024 * 1024;
 
   private final ReadRowsHelper readRowsHelper;

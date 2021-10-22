@@ -1,10 +1,11 @@
 package com.google.cloud.spark.bigquery.common;
 
+import java.io.Serializable;
 import java.util.UUID;
 import org.apache.avro.Schema;
 import org.apache.hadoop.fs.Path;
 
-public class GenericBigQueryIndirectDataWriterFactory {
+public class GenericBigQueryIndirectDataWriterFactory implements Serializable {
   String gcsDirPath;
   String avroSchemaJson;
   String uri;

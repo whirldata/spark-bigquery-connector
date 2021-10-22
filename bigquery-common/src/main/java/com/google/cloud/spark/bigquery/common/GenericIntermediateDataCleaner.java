@@ -6,7 +6,9 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GenericIntermediateDataCleaner extends Thread {
+import java.io.Serializable;
+
+public class GenericIntermediateDataCleaner extends Thread implements Serializable {
   private static final Logger logger =
       LoggerFactory.getLogger(GenericIntermediateDataCleaner.class);
 

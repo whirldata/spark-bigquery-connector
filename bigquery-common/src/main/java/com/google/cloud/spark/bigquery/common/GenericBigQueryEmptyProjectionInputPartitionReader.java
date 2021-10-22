@@ -1,6 +1,8 @@
 package com.google.cloud.spark.bigquery.common;
 
-public class GenericBigQueryEmptyProjectionInputPartitionReader {
+import java.io.Serializable;
+
+public class GenericBigQueryEmptyProjectionInputPartitionReader implements Serializable {
 
   public final int partitionSize;
   public int currentIndex;

@@ -4,7 +4,9 @@ import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.connector.common.BigQueryUtil;
 import com.google.cloud.spark.bigquery.SparkBigQueryConfig;
 
-public class GenericDataSourceHelperClass {
+import java.io.Serializable;
+
+public class GenericDataSourceHelperClass implements Serializable {
 
   public void checkCreateDisposition(SparkBigQueryConfig config) {
     boolean createNever =

@@ -5,9 +5,11 @@ import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.bigquery.storage.v1.ReadRowsRequest;
 import com.google.cloud.bigquery.storage.v1.ReadRowsResponse;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
+
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class GenericBigQueryInputPartition {
+public class GenericBigQueryInputPartition implements Serializable {
   private final BigQueryReadClientFactory bigQueryReadClientFactory;
   private final String streamName;
   private final ReadRowsHelper.Options options;

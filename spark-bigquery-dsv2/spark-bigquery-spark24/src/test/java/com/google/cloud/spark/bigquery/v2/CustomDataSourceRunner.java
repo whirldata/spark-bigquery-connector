@@ -57,18 +57,18 @@ public class CustomDataSourceRunner {
             .cache();
 
     wordsDF.show();
-    //    wordsDF.printSchema();
-    //    wordsDF.createOrReplaceTempView("words");
+        wordsDF.printSchema();
+        wordsDF.createOrReplaceTempView("words");
 
     // Perform word count.
-    //    Dataset<Row> wordCountDF =
-    //            spark.sql("SELECT word, SUM(word_count) AS word_count FROM words GROUP BY word");
-    //
-    //    wordCountDF.show();
-    //    wordCountDF.printSchema();
+        Dataset<Row> wordCountDF =
+                spark.sql("SELECT word, SUM(word_count) AS word_count FROM words GROUP BY word");
 
-    // Saving the data to BigQuery
-    //    wordCountDF.write().format("bigquery").option("table", outputBigqueryTable).save();
+        wordCountDF.show();
+        wordCountDF.printSchema();
+
+//     Saving the data to BigQuery
+        wordCountDF.write().format("bigquery").option("table", outputBigqueryTable).save();
   }
 
   private static void usage() {

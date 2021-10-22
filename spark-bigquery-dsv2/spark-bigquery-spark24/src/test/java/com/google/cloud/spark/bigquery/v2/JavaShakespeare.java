@@ -31,8 +31,7 @@ public class JavaShakespeare {
             .read()
             .format("bigquery")
             .option("table", "bigquery-public-data.samples.shakespeare")
-            .load()
-            .cache();
+            .load();
 
     wordsDF.show();
     wordsDF.printSchema();

@@ -3,12 +3,13 @@ package com.google.cloud.spark.bigquery.common;
 import com.google.cloud.spark.bigquery.SparkBigQueryConfig;
 import com.google.common.base.Preconditions;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.UUID;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-public class GenericBigQueryDataSourceWriterModule {
+public class GenericBigQueryDataSourceWriterModule implements Serializable {
   private final String writeUUID;
 
   public GenericBigQueryDataSourceWriterModule(String writeUUID) {

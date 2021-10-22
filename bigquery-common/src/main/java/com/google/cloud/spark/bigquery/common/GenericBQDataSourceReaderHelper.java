@@ -1,6 +1,8 @@
 package com.google.cloud.spark.bigquery.common;
 
-public class GenericBQDataSourceReaderHelper {
+import java.io.Serializable;
+
+public class GenericBQDataSourceReaderHelper implements Serializable {
 
   public boolean isBatchReadEnable() {
     return true;

@@ -3,11 +3,13 @@ package com.google.cloud.spark.bigquery.common;
 import com.google.cloud.bigquery.TableId;
 import com.google.cloud.bigquery.TableInfo;
 import com.google.cloud.bigquery.connector.common.*;
+
+import java.io.Serializable;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GenericBigQueryDataSourceReader {
+public class GenericBigQueryDataSourceReader implements Serializable {
 
   private static final Logger logger =
       LoggerFactory.getLogger(GenericBigQueryDataSourceReader.class);

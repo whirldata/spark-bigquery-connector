@@ -6,9 +6,11 @@ import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.bigquery.connector.common.ReadSessionResponse;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.ByteString;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class GenericArrowInputPartition {
+public class GenericArrowInputPartition implements Serializable {
   private final BigQueryReadClientFactory bigQueryReadClientFactory;
   private final BigQueryTracerFactory tracerFactory;
   private final List<String> streamNames;
