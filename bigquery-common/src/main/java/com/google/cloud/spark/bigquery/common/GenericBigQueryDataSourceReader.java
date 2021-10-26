@@ -3,7 +3,6 @@ package com.google.cloud.spark.bigquery.common;
 import com.google.cloud.bigquery.TableId;
 import com.google.cloud.bigquery.TableInfo;
 import com.google.cloud.bigquery.connector.common.*;
-
 import java.io.Serializable;
 import java.util.Optional;
 import org.slf4j.Logger;

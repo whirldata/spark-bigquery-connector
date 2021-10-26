@@ -3,7 +3,6 @@ package com.google.cloud.spark.bigquery.common;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.generic.GenericDatumWriter;

@@ -3,7 +3,6 @@ package com.google.cloud.spark.bigquery.common;
 import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.bigquery.storage.v1.ReadRowsResponse;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
-
 import java.io.Serializable;
 import java.util.Iterator;
 

@@ -3,7 +3,6 @@ package com.google.cloud.spark.bigquery.common;
 import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.connector.common.BigQueryUtil;
 import com.google.cloud.spark.bigquery.SparkBigQueryConfig;
-
 import java.io.Serializable;
 
 public class GenericDataSourceHelperClass implements Serializable {

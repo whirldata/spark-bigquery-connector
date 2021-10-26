@@ -5,7 +5,6 @@ import com.google.cloud.bigquery.connector.common.BigQueryClient;
 import com.google.cloud.bigquery.connector.common.BigQueryUtil;
 import com.google.cloud.http.BaseHttpServiceException;
 import com.google.cloud.spark.bigquery.SparkBigQueryConfig;
-
 import java.io.Serializable;
 import java.util.List;
 import org.apache.hadoop.conf.Configuration;

@@ -1,11 +1,10 @@
 package com.google.cloud.spark.bigquery.common;
 
+import java.io.Serializable;
 import org.apache.avro.Schema;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-
-import java.io.Serializable;
 
 public class GenericBigQueryIndirectDataWriter implements Serializable {
   Path path;

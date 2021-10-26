@@ -4,7 +4,6 @@ import com.google.cloud.bigquery.connector.common.BigQueryStorageReadRowsTracer;
 import com.google.cloud.bigquery.connector.common.BigQueryTracerFactory;
 import com.google.cloud.bigquery.storage.v1.ReadRowsRequest;
 import com.google.common.base.Joiner;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;

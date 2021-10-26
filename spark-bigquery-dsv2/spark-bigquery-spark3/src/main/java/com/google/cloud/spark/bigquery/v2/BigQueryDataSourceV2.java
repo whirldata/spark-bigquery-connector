@@ -13,7 +13,7 @@ import org.apache.spark.sql.sources.DataSourceRegister;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.util.CaseInsensitiveStringMap;
 
-public class BigQueryDataSource implements TableProvider, DataSourceRegister, SupportsRead {
+public class BigQueryDataSourceV2 implements TableProvider, DataSourceRegister, SupportsRead {
 
   private Set<TableCapability> capabilities;
 
