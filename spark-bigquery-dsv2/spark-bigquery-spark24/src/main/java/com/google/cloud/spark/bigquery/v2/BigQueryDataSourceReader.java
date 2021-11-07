@@ -153,13 +153,13 @@ public class BigQueryDataSourceReader extends GenericBigQueryDataSourceReader
     ReadSessionResponse readSessionResponse =
         super.getReadSessionCreator().create(super.getTableId(), selectedFields, filter);
     ReadSession readSession = readSessionResponse.getReadSession();
-    GenericBQDataSourceReaderHelper readerHelper = new GenericBQDataSourceReaderHelper();
 
     logger.info(
         "Created read session for {}: {} for application id: {}",
         super.getTableId().toString(),
         readSession.getName(),
         super.getApplicationId());
+
     return readSession.getStreamsList().stream()
         .map(
             stream ->

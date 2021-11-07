@@ -9,15 +9,15 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap;
 
 import java.util.Map;
 
-public class BQTableProvider implements TableProvider, DataSourceRegister {
+public class BigQueryDataSourceV2 implements DataSourceRegister, TableProvider {
     @Override
     public StructType inferSchema(CaseInsensitiveStringMap options) {
-        return getTable(null, null, options.asCaseSensitiveMap()).schema();
+        return null;
     }
 
     @Override
     public Table getTable(StructType schema, Transform[] partitioning, Map<String, String> properties) {
-        return new BQBatchTable();
+        return null;
     }
 
     @Override

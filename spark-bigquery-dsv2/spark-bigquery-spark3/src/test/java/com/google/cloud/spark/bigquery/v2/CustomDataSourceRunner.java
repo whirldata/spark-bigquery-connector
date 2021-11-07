@@ -8,12 +8,15 @@ public class CustomDataSourceRunner {
   public static void main(String[] args) {
    try {
      SparkSession sparkSession = new CustomDataSourceRunner().getDefaultSparkSessionOrCreate();
-     Dataset<Row> simpleDf =
-             sparkSession
-                     .read()
-                     .format("com.google.cloud.spark.bigquery.v2.BQTableProvider")
-                     .load();
-     simpleDf.show();
+       Dataset<Row> wordsDF =
+               sparkSession
+                       .read()
+                       .format("bigquery")
+                       .option("table", "bigquery-public-data.samples.shakespeare")
+                       .load()
+                       .cache();
+
+       wordsDF.show();
 
    }catch (Exception e)
    {

@@ -27,7 +27,11 @@ public class BigQueryInputPartition implements InputPartition {
   private ReadRowsHelper.Options options;
   private ReadRowsResponseToInternalRowIteratorConverter converter;
 
-  public BigQueryInputPartition() {
+  public BigQueryInputPartition(
+          BigQueryReadClientFactory bigQueryReadClientFactory,
+           String streamName,
+           ReadRowsHelper.Options options,
+           ReadRowsResponseToInternalRowIteratorConverter converter) {
     this.bigQueryReadClientFactory = bigQueryReadClientFactory;
     this.streamName = streamName;
     this.options = options;

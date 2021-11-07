@@ -1,5 +1,6 @@
 package com.google.cloud.spark.bigquery.v2;
 
+import com.google.common.collect.ImmutableSet;
 import org.apache.spark.sql.connector.catalog.SupportsRead;
 import org.apache.spark.sql.connector.catalog.SupportsWrite;
 import org.apache.spark.sql.connector.catalog.Table;
@@ -9,19 +10,26 @@ import org.apache.spark.sql.connector.write.LogicalWriteInfo;
 import org.apache.spark.sql.connector.write.WriteBuilder;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.util.CaseInsensitiveStringMap;
-import java.util.HashSet;
+
 import java.util.Set;
 
-public class NewBigQueryTable implements Table, SupportsRead, SupportsWrite {
-    private Set<TableCapability> capabilities;
+public class BigQueryTable implements Table, SupportsRead, SupportsWrite {
+    private static final Set<TableCapability> CAPABILITIES = ImmutableSet.of(
+            TableCapability.BATCH_READ,
+            TableCapability.BATCH_WRITE);
     @Override
     public ScanBuilder newScanBuilder(CaseInsensitiveStringMap options) {
         return null;
     }
 
     @Override
-    public String name() {
+    public WriteBuilder newWriteBuilder(LogicalWriteInfo info) {
         return null;
+    }
+
+    @Override
+    public String name() {
+        return this.getClass().getName();
     }
 
     @Override
@@ -31,15 +39,6 @@ public class NewBigQueryTable implements Table, SupportsRead, SupportsWrite {
 
     @Override
     public Set<TableCapability> capabilities() {
-         if (capabilities == null) {
-            capabilities = new HashSet<TableCapability>();
-            capabilities.add(TableCapability.BATCH_READ);
-        }
-        return capabilities;
-    }
-
-    @Override
-    public WriteBuilder newWriteBuilder(LogicalWriteInfo info) {
-        return null;
+        return CAPABILITIES;
     }
 }

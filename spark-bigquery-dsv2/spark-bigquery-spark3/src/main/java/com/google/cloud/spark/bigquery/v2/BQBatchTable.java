@@ -41,5 +41,4 @@ public class BQBatchTable implements Table, SupportsRead {
         }
         return capabilities;
     }
-
 }

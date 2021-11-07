@@ -31,9 +31,9 @@ class BigQueryDataSourceWriterModule extends GenericBigQueryDataSourceWriterModu
     // empty
   }
 
-  @Singleton
-  @Provides
-  public BigQueryIndirectBatchWriter provideDataSourceWriter(
+ // @Singleton
+  //@Provides
+/*  public BigQueryIndirectBatchWriter provideDataSourceWriter(
       BigQueryClient bigQueryClient, SparkBigQueryConfig config, SparkSession spark)
       throws IOException {
     Path gcsPath =
@@ -59,5 +59,5 @@ class BigQueryDataSourceWriterModule extends GenericBigQueryDataSourceWriterModu
         mode,
         gcsPath,
         intermediateDataCleaner);
-  }
+  }*/
 }
