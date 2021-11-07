@@ -1,1 +1,1 @@
-com.google.cloud.spark.bigquery.v2.BQTableProvider
+com.google.cloud.spark.bigquery.v2.BigQueryDataSourceV2

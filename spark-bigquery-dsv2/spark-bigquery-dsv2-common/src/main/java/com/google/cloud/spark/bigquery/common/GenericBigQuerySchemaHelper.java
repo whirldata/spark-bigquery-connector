@@ -9,7 +9,7 @@ import org.apache.spark.sql.types.StructType;
 
 import java.util.Optional;
 
-public class BQSchemaHelper {
+public class GenericBigQuerySchemaHelper {
 
     public boolean isEmptySchema(Optional<StructType> schema) {
         return schema.map(StructType::isEmpty).orElse(false);

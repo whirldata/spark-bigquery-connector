@@ -1,8 +1,10 @@
 package com.google.cloud.spark.bigquery.v2;
 
+import com.google.cloud.bigquery.TableId;
 import com.google.cloud.bigquery.TableInfo;
-import com.google.cloud.bigquery.connector.common.ReadSessionCreatorConfig;
-import com.google.cloud.spark.bigquery.common.BQSparkFilterHelper;
+import com.google.cloud.bigquery.connector.common.*;
+import com.google.cloud.spark.bigquery.SchemaConverters;
+import com.google.cloud.spark.bigquery.common.GenericBigQuerySparkFilterHelper;
 import org.apache.spark.sql.connector.read.Scan;
 import org.apache.spark.sql.connector.read.ScanBuilder;
 import org.apache.spark.sql.connector.read.SupportsPushDownFilters;
@@ -13,16 +15,46 @@ import org.apache.spark.sql.types.StructType;
 import java.util.Optional;
 
 public class BigQueryScanBuilder implements ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns {
-    TableInfo table;
-    ReadSessionCreatorConfig readSessionCreatorConfig;
     private Optional<StructType> schema;
-    private BQSparkFilterHelper filterHelper;
+    private Optional<StructType> userProvidedSchema;
+    private GenericBigQuerySparkFilterHelper filterHelper;
+    private final TableInfo table;
+    private final TableId tableId;
+    private final ReadSessionCreatorConfig readSessionCreatorConfig;
+    private final BigQueryClient bigQueryClient;
+    private final BigQueryReadClientFactory bigQueryReadClientFactory;
+    private final BigQueryTracerFactory bigQueryTracerFactory;
+    private final ReadSessionCreator readSessionCreator;
+    private final Optional<String> globalFilter;
+    private final String applicationId;
 
-    BigQueryScanBuilder(TableInfo table, ReadSessionCreatorConfig readSessionCreatorConfig, Optional<StructType> schema) {
+
+    BigQueryScanBuilder(TableInfo table, BigQueryClient bigQueryClient, BigQueryReadClientFactory bigQueryReadClientFactory,
+                        BigQueryTracerFactory tracerFactory, ReadSessionCreatorConfig readSessionCreatorConfig, Optional<String> globalFilter,
+                        Optional<StructType> schema, String applicationId
+    ) {
+
         this.table = table;
+        this.tableId = table.getTableId();
         this.readSessionCreatorConfig = readSessionCreatorConfig;
-        this.schema = schema;
-        filterHelper = new BQSparkFilterHelper(table, readSessionCreatorConfig);
+        this.bigQueryClient = bigQueryClient;
+        this.bigQueryReadClientFactory = bigQueryReadClientFactory;
+        this.bigQueryTracerFactory = tracerFactory;
+        this.applicationId = applicationId;
+        this.readSessionCreator =
+                new ReadSessionCreator(readSessionCreatorConfig, bigQueryClient, bigQueryReadClientFactory);
+        this.globalFilter = globalFilter;
+        StructType convertedSchema =
+                SchemaConverters.toSpark(SchemaConverters.getSchemaWithPseudoColumns(table));
+        if (schema.isPresent()) {
+            this.schema = schema;
+            this.userProvidedSchema = schema;
+        } else {
+            this.schema = Optional.of(convertedSchema);
+            this.userProvidedSchema = Optional.empty();
+        }
+        filterHelper = new GenericBigQuerySparkFilterHelper(table, readSessionCreatorConfig);
+
     }
 
 

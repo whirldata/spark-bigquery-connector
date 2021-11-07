@@ -5,7 +5,7 @@ import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.bigquery.connector.common.ReadSessionCreatorConfig;
 import com.google.cloud.bigquery.storage.v1.ReadRowsResponse;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
-import com.google.cloud.spark.bigquery.common.BQSchemaHelper;
+import com.google.cloud.spark.bigquery.common.GenericBigQuerySchemaHelper;
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.connector.read.InputPartition;
 import org.apache.spark.sql.connector.read.PartitionReader;
@@ -22,7 +22,7 @@ public class BigQueryPartitionReaderFactory implements PartitionReaderFactory {
     private Optional<StructType> schema;
     private TableInfo table;
     private ReadSessionCreatorConfig readSessionCreatorConfig;
-    private BQSchemaHelper helper;
+    private GenericBigQuerySchemaHelper helper;
 
     BigQueryPartitionReaderFactory(
             Iterator<ReadRowsResponse> readRowsResponses,
@@ -33,7 +33,7 @@ public class BigQueryPartitionReaderFactory implements PartitionReaderFactory {
         this.readRowsHelper = readRowsHelper;
         this.schema = schema;
         this.readSessionCreatorConfig = readSessionCreatorConfig;
-        new BQSchemaHelper();
+        new GenericBigQuerySchemaHelper();
     }
 
     @Override

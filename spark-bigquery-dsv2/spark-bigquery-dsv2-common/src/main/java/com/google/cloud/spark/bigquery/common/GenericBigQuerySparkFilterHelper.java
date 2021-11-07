@@ -14,10 +14,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BQSparkFilterHelper {
+public class GenericBigQuerySparkFilterHelper {
     private Map<String, StructField> fields;
     private Filter[] pushedFilters = new Filter[]{};
-    public BQSparkFilterHelper(TableInfo table, ReadSessionCreatorConfig readSessionCreatorConfig) {
+    public GenericBigQuerySparkFilterHelper(TableInfo table, ReadSessionCreatorConfig readSessionCreatorConfig) {
         StructType convertedSchema =
                 SchemaConverters.toSpark(SchemaConverters.getSchemaWithPseudoColumns(table));
         this.fields = new LinkedHashMap<>();

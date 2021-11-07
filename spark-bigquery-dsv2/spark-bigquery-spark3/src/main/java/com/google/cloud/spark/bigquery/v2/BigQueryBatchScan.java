@@ -8,7 +8,7 @@ import com.google.cloud.bigquery.storage.v1.ReadStream;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
 import com.google.cloud.spark.bigquery.SchemaConverters;
 import com.google.cloud.spark.bigquery.SparkFilterUtils;
-import com.google.cloud.spark.bigquery.common.BQSchemaHelper;
+import com.google.cloud.spark.bigquery.common.GenericBigQuerySchemaHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.apache.spark.sql.connector.read.*;
@@ -18,13 +18,11 @@ import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.collection.JavaConversions;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics {
-
     private static final Logger logger =
             LoggerFactory.getLogger(BigQueryBatchScan.class);
     private static Statistics UNKNOWN_STATISTICS =
@@ -53,7 +51,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
     private Optional<StructType> userProvidedSchema;
     private Filter[] pushedFilters = new Filter[]{};
     private Map<String, StructField> fields;
-    private BQSchemaHelper schemaHelper;
+    private GenericBigQuerySchemaHelper schemaHelper;
 
 
     public BigQueryBatchScan(TableInfo table, TableId tableId,
@@ -87,7 +85,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
         for (StructField field : JavaConversions.seqAsJavaList(convertedSchema)) {
             fields.put(field.name(), field);
         }
-        schemaHelper = new BQSchemaHelper();
+        schemaHelper = new GenericBigQuerySchemaHelper();
     }
 
     @Override

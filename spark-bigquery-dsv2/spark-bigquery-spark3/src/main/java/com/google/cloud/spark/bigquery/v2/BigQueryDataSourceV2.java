@@ -6,10 +6,11 @@ import org.apache.spark.sql.connector.expressions.Transform;
 import org.apache.spark.sql.sources.DataSourceRegister;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.util.CaseInsensitiveStringMap;
-
 import java.util.Map;
 
 public class BigQueryDataSourceV2 implements DataSourceRegister, TableProvider {
+
+
     @Override
     public StructType inferSchema(CaseInsensitiveStringMap options) {
         return null;
@@ -17,8 +18,10 @@ public class BigQueryDataSourceV2 implements DataSourceRegister, TableProvider {
 
     @Override
     public Table getTable(StructType schema, Transform[] partitioning, Map<String, String> properties) {
-        return null;
+        return new BigQueryTable(schema,properties);
     }
+
+
 
     @Override
     public String shortName() {
