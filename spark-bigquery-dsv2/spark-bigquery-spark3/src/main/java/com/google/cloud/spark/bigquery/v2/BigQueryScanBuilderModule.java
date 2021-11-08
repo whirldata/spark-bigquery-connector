@@ -25,7 +25,6 @@ public class BigQueryScanBuilderModule implements Module {
             SparkBigQueryConfig config,
             SparkSession sparkSession) {
         TableInfo tableInfo = bigQueryClient.getReadTable(config.toReadTableOptions());
-        System.out.println("tableinfo : "+tableInfo.getFriendlyName());
         return new BigQueryScanBuilder(
                 tableInfo,
                 bigQueryClient,

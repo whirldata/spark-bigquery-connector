@@ -13,7 +13,7 @@ public class CustomDataSourceRunner {
                        .read()
                        .format("bigquery")
                        .option("table", "bigquery-public-data.samples.shakespeare")
-                       .option("schema","value" )
+                       .option("inferSchema","true" )
                        .load()
                        .cache();
 
