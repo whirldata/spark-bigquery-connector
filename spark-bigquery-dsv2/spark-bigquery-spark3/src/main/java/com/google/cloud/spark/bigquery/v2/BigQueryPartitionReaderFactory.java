@@ -5,6 +5,7 @@ import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.bigquery.connector.common.ReadSessionCreatorConfig;
 import com.google.cloud.bigquery.storage.v1.ReadRowsResponse;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
+import com.google.cloud.spark.bigquery.common.GenericArrowBigQueryInputPartitionHelper;
 import com.google.cloud.spark.bigquery.common.GenericBigQuerySchemaHelper;
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.connector.read.InputPartition;
@@ -49,6 +50,12 @@ public class BigQueryPartitionReaderFactory implements PartitionReaderFactory {
 
     @Override
     public PartitionReader<ColumnarBatch> createColumnarReader(InputPartition partition) {
+        if(partition instanceof ArrowInputPartition)
+        {
+            GenericArrowBigQueryInputPartitionHelper bqInputPartitionHelper =
+                    new GenericArrowBigQueryInputPartitionHelper();
+            
+        }
         return PartitionReaderFactory.super.createColumnarReader(partition);
     }
 
