@@ -6,23 +6,22 @@ import org.apache.spark.sql.SparkSession;
 
 public class CustomDataSourceRunner {
   public static void main(String[] args) {
-   try {
-     SparkSession sparkSession = new CustomDataSourceRunner().getDefaultSparkSessionOrCreate();
-       Dataset<Row> wordsDF =
-               sparkSession
-                       .read()
-                       .format("bigquery")
-                       .option("table", "bigquery-public-data.samples.shakespeare")
-                      // .option("inferSchema","true" )
-                       .load()
-                       .cache();
+    try {
+      SparkSession sparkSession = new CustomDataSourceRunner().getDefaultSparkSessionOrCreate();
+      Dataset<Row> wordsDF =
+          sparkSession
+              .read()
+              .format("bigquery")
+              .option("table", "bigquery-public-data.samples.shakespeare")
+              // .option("inferSchema","true" )
+              .load()
+              .cache();
 
-       wordsDF.show();
+      wordsDF.show();
 
-   }catch (Exception e)
-   {
-     e.printStackTrace();
-   }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private SparkSession getDefaultSparkSessionOrCreate() {
