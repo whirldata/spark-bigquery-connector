@@ -15,9 +15,6 @@ import org.apache.spark.sql.types.StructType;
 import java.util.Optional;
 
 public class BigQueryScanBuilder implements ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns {
-    private Optional<StructType> schema;
-    private Optional<StructType> userProvidedSchema;
-    private GenericBigQuerySparkFilterHelper filterHelper;
     private final TableInfo table;
     private final TableId tableId;
     private final ReadSessionCreatorConfig readSessionCreatorConfig;
@@ -27,6 +24,9 @@ public class BigQueryScanBuilder implements ScanBuilder, SupportsPushDownFilters
     private final ReadSessionCreator readSessionCreator;
     private final Optional<String> globalFilter;
     private final String applicationId;
+    private Optional<StructType> schema;
+    private Optional<StructType> userProvidedSchema;
+    private GenericBigQuerySparkFilterHelper filterHelper;
 
 
     BigQueryScanBuilder(TableInfo table, BigQueryClient bigQueryClient, BigQueryReadClientFactory bigQueryReadClientFactory,
@@ -54,7 +54,6 @@ public class BigQueryScanBuilder implements ScanBuilder, SupportsPushDownFilters
             this.userProvidedSchema = Optional.empty();
         }
         filterHelper = new GenericBigQuerySparkFilterHelper(table, readSessionCreatorConfig);
-
     }
 
 
@@ -75,6 +74,6 @@ public class BigQueryScanBuilder implements ScanBuilder, SupportsPushDownFilters
 
     @Override
     public Scan build() {
-        return null;
+        return new BigQueryBatchScan(table, tableId, readSessionCreatorConfig, bigQueryClient, bigQueryReadClientFactory, bigQueryTracerFactory, readSessionCreator, globalFilter, applicationId);
     }
 }

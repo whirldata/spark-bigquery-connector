@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ArrowColumnBatchPartitionColumnarBatchReader extends GenericArrowColumnBatchPartitionReader implements PartitionReader {
+public class ArrowColumnBatchPartitionColumnarBatchReader extends GenericArrowColumnBatchPartitionReader implements PartitionReader<ColumnarBatch> {
 
     private final Map<String, StructField> userProvidedFieldMap;
     private ColumnarBatch currentBatch;

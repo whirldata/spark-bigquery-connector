@@ -150,6 +150,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
                 "No known converted for " + readSessionCreatorConfig.getReadDataFormat());
     }
 
+
     @Override
     public PartitionReaderFactory createReaderFactory() {
 

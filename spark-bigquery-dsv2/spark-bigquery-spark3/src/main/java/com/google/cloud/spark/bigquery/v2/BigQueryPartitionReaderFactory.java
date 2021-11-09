@@ -15,12 +15,12 @@ import org.apache.spark.sql.connector.read.PartitionReader;
 import org.apache.spark.sql.connector.read.PartitionReaderFactory;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.vectorized.ColumnarBatch;
-
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class BigQueryPartitionReaderFactory implements PartitionReaderFactory {
+public class BigQueryPartitionReaderFactory implements PartitionReaderFactory, Serializable {
     private Iterator<ReadRowsResponse> readRowsResponses;
     private ReadRowsResponseToInternalRowIteratorConverter converter;
     private ReadRowsHelper readRowsHelper;

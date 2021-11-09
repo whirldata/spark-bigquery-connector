@@ -20,7 +20,9 @@ import com.google.cloud.bigquery.connector.common.ReadRowsHelper;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
 import org.apache.spark.sql.connector.read.InputPartition;
 
-public class BigQueryInputPartition implements InputPartition {
+import java.io.Serializable;
+
+public class BigQueryInputPartition implements InputPartition, Serializable {
 
   private BigQueryReadClientFactory bigQueryReadClientFactory;
   private String streamName;

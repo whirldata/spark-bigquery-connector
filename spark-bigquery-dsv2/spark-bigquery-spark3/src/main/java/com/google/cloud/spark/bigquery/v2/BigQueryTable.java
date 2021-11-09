@@ -72,7 +72,6 @@ public class BigQueryTable implements Table, SupportsRead, SupportsWrite {
 
     @Override
     public StructType schema() {
-        System.out.println(schema);
         return this.schema;
     }
 
