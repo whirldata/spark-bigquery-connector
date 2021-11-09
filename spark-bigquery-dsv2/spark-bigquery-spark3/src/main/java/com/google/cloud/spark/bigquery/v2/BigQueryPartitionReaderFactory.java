@@ -73,7 +73,7 @@ public class BigQueryPartitionReaderFactory implements PartitionReaderFactory, S
             tracer.startStream();
             // iterator to read data from bigquery read rows object
             Iterator<ReadRowsResponse> readRowsResponses = readRowsHelper.readRows();
-            return new ArrowColumnBatchPartitionColumnarBatchReader(
+            return new ArrowColumnBatchPartitionReader(
                     readRowsResponses,
                     ((ArrowInputPartition) partition).getSerializedArrowSchema(),
                     readRowsHelper,

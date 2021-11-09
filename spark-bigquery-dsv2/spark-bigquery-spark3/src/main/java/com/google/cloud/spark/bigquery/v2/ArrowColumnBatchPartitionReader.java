@@ -17,18 +17,18 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ArrowColumnBatchPartitionColumnarBatchReader extends GenericArrowColumnBatchPartitionReader implements PartitionReader<ColumnarBatch> {
+public class ArrowColumnBatchPartitionReader extends GenericArrowColumnBatchPartitionReader implements PartitionReader<ColumnarBatch> {
 
     private final Map<String, StructField> userProvidedFieldMap;
     private ColumnarBatch currentBatch;
     private boolean closed = false;
 
-    public ArrowColumnBatchPartitionColumnarBatchReader(Iterator<ReadRowsResponse> readRowsResponses, ByteString schema,
-                                                        ReadRowsHelper readRowsHelper,
-                                                        List<String> namesInOrder,
-                                                        BigQueryStorageReadRowsTracer tracer,
-                                                        Optional<StructType> userProvidedSchema,
-                                                        int numBackgroundThreads) {
+    public ArrowColumnBatchPartitionReader(Iterator<ReadRowsResponse> readRowsResponses, ByteString schema,
+                                           ReadRowsHelper readRowsHelper,
+                                           List<String> namesInOrder,
+                                           BigQueryStorageReadRowsTracer tracer,
+                                           Optional<StructType> userProvidedSchema,
+                                           int numBackgroundThreads) {
         super(readRowsResponses, schema, readRowsHelper, namesInOrder, tracer, numBackgroundThreads);
         List<StructField> userProvidedFieldList =
                 Arrays.stream(userProvidedSchema.orElse(new StructType()).fields())
