@@ -3,23 +3,21 @@ package com.google.cloud.spark.bigquery.v2;
 import com.google.cloud.bigquery.*;
 import com.google.cloud.bigquery.connector.common.*;
 import com.google.cloud.bigquery.storage.v1.DataFormat;
-import com.google.cloud.bigquery.storage.v1.ReadRowsResponse;
 import com.google.cloud.bigquery.storage.v1.ReadSession;
 import com.google.cloud.bigquery.storage.v1.ReadStream;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
 import com.google.cloud.spark.bigquery.SchemaConverters;
 import com.google.cloud.spark.bigquery.SparkFilterUtils;
+import com.google.cloud.spark.bigquery.common.GenericBigQueryInputPartition;
 import com.google.cloud.spark.bigquery.common.GenericBigQuerySchemaHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Streams;
 import org.apache.spark.sql.connector.read.*;
 import org.apache.spark.sql.sources.Filter;
+import org.apache.spark.sql.sources.v2.reader.SupportsScanColumnarBatch;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
@@ -55,10 +53,11 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
   private Filter[] pushedFilters = new Filter[] {};
   private Map<String, StructField> fields;
   private GenericBigQuerySchemaHelper schemaHelper;
-
+  private GenericBigQueryInputPartition bqIPHelper;
   public BigQueryBatchScan(
       TableInfo table,
       TableId tableId,
+      Optional<StructType> schema,
       ReadSessionCreatorConfig readSessionCreatorConfig,
       BigQueryClient bigQueryClient,
       BigQueryReadClientFactory bigQueryReadClientFactory,
@@ -76,6 +75,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
     this.readSessionCreator =
         new ReadSessionCreator(readSessionCreatorConfig, bigQueryClient, bigQueryReadClientFactory);
     this.globalFilter = globalFilter;
+    this.schema = schema;
     StructType convertedSchema =
         SchemaConverters.toSpark(SchemaConverters.getSchemaWithPseudoColumns(table));
     if (schema.isPresent()) {
@@ -91,6 +91,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
       fields.put(field.name(), field);
     }
     schemaHelper = new GenericBigQuerySchemaHelper();
+//    this.bqIPHelper = new GenericBigQueryInputPartition(bigQueryReadClientFactory,)
   }
 
   @Override
@@ -111,10 +112,9 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
         tableId.toString(),
         readSession.getName(),
         applicationId);
-
-    InputPartition[] bigQueryInputPartitions =
-        new InputPartition[readSession.getStreamsList().size()];
     List<ReadStream> streamList = readSession.getStreamsList();
+    InputPartition[] bigQueryInputPartitions =
+        new InputPartition[streamList.size()];
 
     for (int i = 0; i < streamList.size(); i++) {
       bigQueryInputPartitions[i] =
@@ -124,13 +124,12 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
               readSessionCreatorConfig.toReadRowsHelperOptions(),
               createConverter(selectedFields, readSessionResponse, userProvidedSchema));
     }
-
-    if(schemaHelper.isEnableBatchRead(readSessionCreatorConfig,schema)) {
+    if(schemaHelper.isEnableBatchRead(readSessionCreatorConfig,schema))
+    {
       selectedFields =
               schema
                       .map(requiredSchema -> ImmutableList.copyOf(requiredSchema.fieldNames()))
-                      .orElse(ImmutableList.copyOf(fields.keySet()));
-      filter = getCombinedFilter();
+                      .orElse(ImmutableList.copyOf(fields.keySet()));filter = getCombinedFilter();
       readSessionResponse =
               readSessionCreator.create(tableId, selectedFields, filter);
       readSession = readSessionResponse.getReadSession();
@@ -165,7 +164,6 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
     }
     return bigQueryInputPartitions;
   }
-
 
   private ReadRowsResponseToInternalRowIteratorConverter createConverter(
       ImmutableList<String> selectedFields,
@@ -202,13 +200,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
 
   @Override
   public PartitionReaderFactory createReaderFactory() {
-/*
-    Iterator<ReadRowsResponse> readRowsResponses,
-    ReadRowsResponseToInternalRowIteratorConverter converter,
-    ReadRowsHelper readRowsHelper,
-    Optional<StructType> schema,
-    TableInfo table,
-    ReadSessionCreatorConfig readSessionCreatorConfig*/
+
     // new BigQueryPartitionReaderFactory()
     return null;
   }
@@ -236,7 +228,6 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
             readSessionCreatorConfig.getReadDataFormat(),
             globalFilter,
             pushedFilters));
-
   }
 
   Optional<String> emptyIfNeeded(String value) {

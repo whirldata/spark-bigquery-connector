@@ -80,6 +80,7 @@ public class BigQueryScanBuilder
     return new BigQueryBatchScan(
         table,
         tableId,
+        schema,
         readSessionCreatorConfig,
         bigQueryClient,
         bigQueryReadClientFactory,
