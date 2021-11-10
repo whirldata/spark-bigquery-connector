@@ -13,7 +13,7 @@ public class CustomDataSourceRunner {
         sparkSession
             .read()
             .format("bigquery")
-            .option("table", "bigquery-public-data:samples.shakespeare")
+            .option("table", "test")
             // .option("credentials", "/home/praful/tidy-tine-318906-f45b44d49e7c.json")
             .load();
     simpleDf.show();
@@ -52,7 +52,7 @@ public class CustomDataSourceRunner {
         spark
             .read()
             .format("bigquery")
-            .option("table", "bigquery-public-data.samples.shakespeare")
+            .option("table", "bigquery-public-data.samples.shakespeare5")
             .load()
             .cache();
 

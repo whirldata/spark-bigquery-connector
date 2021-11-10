@@ -13,22 +13,23 @@ import java.util.Optional;
 import org.apache.spark.sql.connector.read.InputPartition;
 import org.apache.spark.sql.types.StructType;
 
-public class ArrowInputPartition extends GenericArrowInputPartition implements InputPartition {
+public class ArrowInputPartition  implements InputPartition {
   public com.google.common.base.Optional<StructType> getUserProvidedSchema() {
     return userProvidedSchema;
   }
 
   private final com.google.common.base.Optional<StructType> userProvidedSchema;
 
+  private GenericArrowInputPartition arrowInputPartitionHelper;
   public ArrowInputPartition(
       BigQueryReadClientFactory bigQueryReadClientFactory,
       BigQueryTracerFactory tracerFactory,
-      List<String> names,
+      String names,
       ReadRowsHelper.Options options,
       ImmutableList<String> selectedFields,
       ReadSessionResponse readSessionResponse,
       Optional<StructType> userProvidedSchema) {
-    super(
+    arrowInputPartitionHelper=new GenericArrowInputPartition(
         bigQueryReadClientFactory,
         tracerFactory,
         names,
