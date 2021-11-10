@@ -12,11 +12,10 @@ import java.util.List;
 public class GenericArrowInputPartition implements Serializable {
   private final BigQueryReadClientFactory bigQueryReadClientFactory;
   private final BigQueryTracerFactory tracerFactory;
-  private  List<String> streamNames;
+  private List<String> streamNames;
   private final ReadRowsHelper.Options options;
   private final ImmutableList<String> selectedFields;
   private final ByteString serializedArrowSchema;
-  private  String streamName;
 
   public GenericArrowInputPartition(
       BigQueryReadClientFactory bigQueryReadClientFactory,
@@ -31,21 +30,6 @@ public class GenericArrowInputPartition implements Serializable {
     this.selectedFields = selectedFields;
     this.serializedArrowSchema =
         readSessionResponse.getReadSession().getArrowSchema().getSerializedSchema();
-    this.tracerFactory = tracerFactory;
-  }
-  public GenericArrowInputPartition(
-          BigQueryReadClientFactory bigQueryReadClientFactory,
-          BigQueryTracerFactory tracerFactory,
-          String names,
-          ReadRowsHelper.Options options,
-          ImmutableList<String> selectedFields,
-          ReadSessionResponse readSessionResponse) {
-    this.bigQueryReadClientFactory = bigQueryReadClientFactory;
-    this.streamName = names;
-    this.options = options;
-    this.selectedFields = selectedFields;
-    this.serializedArrowSchema =
-            readSessionResponse.getReadSession().getArrowSchema().getSerializedSchema();
     this.tracerFactory = tracerFactory;
   }
 
