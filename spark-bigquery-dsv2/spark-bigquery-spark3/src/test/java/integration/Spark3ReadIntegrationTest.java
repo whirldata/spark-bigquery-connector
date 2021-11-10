@@ -19,10 +19,9 @@ package integration;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
-import java.util.List;
-
 import com.google.cloud.spark.bigquery.integration.ReadIntegrationTestBase;
 import com.google.cloud.spark.bigquery.integration.TestConstants;
+import java.util.List;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.DataTypes;
@@ -32,145 +31,145 @@ import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
 public class Spark3ReadIntegrationTest extends ReadIntegrationTestBase {
-    private static final String LARGE_TABLE = "bigquery-public-data.samples.natality";
-    private static final String LARGE_TABLE_FIELD = "is_male";
-    private static final long LARGE_TABLE_NUM_ROWS = 33271914L;
-    private static final String NON_EXISTENT_TABLE = "non-existent.non-existent.non-existent";
-    private static final String STRUCT_COLUMN_ORDER_TEST_TABLE_NAME = "struct_column_order";
-    private static final String ALL_TYPES_TABLE_NAME = "all_types";
-    private static final String ALL_TYPES_VIEW_NAME = "all_types_view";
-    // tests are from the super-class
-    @Test
-    public void testCountWithFilters() {
-        long countResults =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data.samples.shakespeare")
-                        .option("readDataFormat", "ARROW")
-                        .load()
-                        .where("word_count = 1 OR corpus_date = 0")
-                        .count();
-
-        long countAfterCollect =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data.samples.shakespeare")
-                        .option("readDataFormat", "ARROW")
-                        .load()
-                        .where("word_count = 1 OR corpus_date = 0")
-                        .collectAsList()
-                        .size();
-
-        assertThat(countResults).isEqualTo(countAfterCollect);
-    }
-
-    @Test
-    public void testKnownSizeInBytes() {
-        Dataset<Row> allTypesTable = readAllTypesTable();
-        long actualTableSize =
-                allTypesTable.queryExecution().analyzed().stats().sizeInBytes().longValue();
-        assertThat(actualTableSize).isEqualTo(TestConstants.ALL_TYPES_TABLE_SIZE);
-    }
-
-    @Test
-    public void testKnownSchema() {
-        Dataset<Row> allTypesTable = readAllTypesTable();
-        assertThat(allTypesTable.schema()).isEqualTo(TestConstants.ALL_TYPES_TABLE_SCHEMA);
-    }
-
-    @Test
-    public void testUserDefinedSchema() {
-        // TODO(pmkc): consider a schema that wouldn't cause cast errors if read.
-        StructType expectedSchema =
-                new StructType(
-                        new StructField[] {
-                                new StructField("whatever", DataTypes.ByteType, true, Metadata.empty())
-                        });
-        Dataset<Row> table =
-                spark
-                        .read()
-                        .schema(expectedSchema)
-                        .format("bigquery")
-                        .option("table", TestConstants.SHAKESPEARE_TABLE)
-                        .load();
-        assertThat(expectedSchema).isEqualTo(table.schema());
-    }
-
-    @Test
-    public void testNonExistentSchema() {
-        assertThrows(
-                "Trying to read a non existing table should throw an exception",
-                RuntimeException.class,
-                () -> {
-                    spark.read().format("bigquery").option("table", NON_EXISTENT_TABLE).load();
-                });
-    }
-
-    @Test(timeout = 10_000) // 10 seconds
-    public void testHeadDoesNotTimeoutAndOOM() {
+  private static final String LARGE_TABLE = "bigquery-public-data.samples.natality";
+  private static final String LARGE_TABLE_FIELD = "is_male";
+  private static final long LARGE_TABLE_NUM_ROWS = 33271914L;
+  private static final String NON_EXISTENT_TABLE = "non-existent.non-existent.non-existent";
+  private static final String STRUCT_COLUMN_ORDER_TEST_TABLE_NAME = "struct_column_order";
+  private static final String ALL_TYPES_TABLE_NAME = "all_types";
+  private static final String ALL_TYPES_VIEW_NAME = "all_types_view";
+  // tests are from the super-class
+  @Test
+  public void testCountWithFilters() {
+    long countResults =
         spark
-                .read()
-                .format("bigquery")
-                .option("table", LARGE_TABLE)
-                .load()
-                .select(LARGE_TABLE_FIELD)
-                .head();
-    }
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data.samples.shakespeare")
+            .option("readDataFormat", "ARROW")
+            .load()
+            .where("word_count = 1 OR corpus_date = 0")
+            .count();
 
-    @Test
-    public void testUnhandleFilterOnStruct() {
-        Dataset<Row> df =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data:samples.github_nested")
-                        .option("filter", "url like '%spark'")
-                        .load();
+    long countAfterCollect =
+        spark
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data.samples.shakespeare")
+            .option("readDataFormat", "ARROW")
+            .load()
+            .where("word_count = 1 OR corpus_date = 0")
+            .collectAsList()
+            .size();
 
-        List<Row> result = df.select("url").where("repository is not null").collectAsList();
+    assertThat(countResults).isEqualTo(countAfterCollect);
+  }
 
-        assertThat(result).hasSize(85);
-    }
+  @Test
+  public void testKnownSizeInBytes() {
+    Dataset<Row> allTypesTable = readAllTypesTable();
+    long actualTableSize =
+        allTypesTable.queryExecution().analyzed().stats().sizeInBytes().longValue();
+    assertThat(actualTableSize).isEqualTo(TestConstants.ALL_TYPES_TABLE_SIZE);
+  }
 
-    @Test
-    public void testQueryMaterializedView() {
-        Dataset<Row> df =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data:ethereum_blockchain.live_logs")
-                        .option("viewsEnabled", "true")
-                        .option("viewMaterializationProject", PROJECT_ID)
-                        .option("viewMaterializationDataset", testDataset.toString())
-                        .load();
+  @Test
+  public void testKnownSchema() {
+    Dataset<Row> allTypesTable = readAllTypesTable();
+    assertThat(allTypesTable.schema()).isEqualTo(TestConstants.ALL_TYPES_TABLE_SCHEMA);
+  }
 
-        assertThat(df.count()).isGreaterThan(1);
-    }
+  @Test
+  public void testUserDefinedSchema() {
+    // TODO(pmkc): consider a schema that wouldn't cause cast errors if read.
+    StructType expectedSchema =
+        new StructType(
+            new StructField[] {
+              new StructField("whatever", DataTypes.ByteType, true, Metadata.empty())
+            });
+    Dataset<Row> table =
+        spark
+            .read()
+            .schema(expectedSchema)
+            .format("bigquery")
+            .option("table", TestConstants.SHAKESPEARE_TABLE)
+            .load();
+    assertThat(expectedSchema).isEqualTo(table.schema());
+  }
 
-    @Test
-    public void testOrAcrossColumnsAndFormats() {
-        List<Row> avroResults =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data.samples.shakespeare")
-                        .option("filter", "word_count = 1 OR corpus_date = 0")
-                        .option("readDataFormat", "AVRO")
-                        .load()
-                        .collectAsList();
+  @Test
+  public void testNonExistentSchema() {
+    assertThrows(
+        "Trying to read a non existing table should throw an exception",
+        RuntimeException.class,
+        () -> {
+          spark.read().format("bigquery").option("table", NON_EXISTENT_TABLE).load();
+        });
+  }
 
-        List<Row> arrowResults =
-                spark
-                        .read()
-                        .format("bigquery")
-                        .option("table", "bigquery-public-data.samples.shakespeare")
-                        .option("readDataFormat", "ARROW")
-                        .load()
-                        .where("word_count = 1 OR corpus_date = 0")
-                        .collectAsList();
+  @Test(timeout = 10_000) // 10 seconds
+  public void testHeadDoesNotTimeoutAndOOM() {
+    spark
+        .read()
+        .format("bigquery")
+        .option("table", LARGE_TABLE)
+        .load()
+        .select(LARGE_TABLE_FIELD)
+        .head();
+  }
 
-        assertThat(avroResults).isEqualTo(arrowResults);
-    }
+  @Test
+  public void testUnhandleFilterOnStruct() {
+    Dataset<Row> df =
+        spark
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data:samples.github_nested")
+            .option("filter", "url like '%spark'")
+            .load();
+
+    List<Row> result = df.select("url").where("repository is not null").collectAsList();
+
+    assertThat(result).hasSize(85);
+  }
+
+  @Test
+  public void testQueryMaterializedView() {
+    Dataset<Row> df =
+        spark
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data:ethereum_blockchain.live_logs")
+            .option("viewsEnabled", "true")
+            .option("viewMaterializationProject", PROJECT_ID)
+            .option("viewMaterializationDataset", testDataset.toString())
+            .load();
+
+    assertThat(df.count()).isGreaterThan(1);
+  }
+
+  @Test
+  public void testOrAcrossColumnsAndFormats() {
+    List<Row> avroResults =
+        spark
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data.samples.shakespeare")
+            .option("filter", "word_count = 1 OR corpus_date = 0")
+            .option("readDataFormat", "AVRO")
+            .load()
+            .collectAsList();
+
+    List<Row> arrowResults =
+        spark
+            .read()
+            .format("bigquery")
+            .option("table", "bigquery-public-data.samples.shakespeare")
+            .option("readDataFormat", "ARROW")
+            .load()
+            .where("word_count = 1 OR corpus_date = 0")
+            .collectAsList();
+
+    assertThat(avroResults).isEqualTo(arrowResults);
+  }
 }

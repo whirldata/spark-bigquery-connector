@@ -12,28 +12,26 @@ import com.google.inject.Singleton;
 import org.apache.spark.sql.SparkSession;
 
 public class BigQueryScanBuilderModule implements Module {
-    @Override
-    public void configure(Binder binder) {
+  @Override
+  public void configure(Binder binder) {}
 
-    }
-    @Singleton
-    @Provides
-    public BigQueryScanBuilder provideScanbuilder(
-            BigQueryClient bigQueryClient,
-            BigQueryReadClientFactory bigQueryReadClientFactory,
-            BigQueryTracerFactory tracerFactory,
-            SparkBigQueryConfig config,
-            SparkSession sparkSession) {
-        TableInfo tableInfo = bigQueryClient.getReadTable(config.toReadTableOptions());
-        return new BigQueryScanBuilder(
-                tableInfo,
-                bigQueryClient,
-                bigQueryReadClientFactory,
-                tracerFactory,
-                config.toReadSessionCreatorConfig(),
-                config.getFilter(),
-                config.getSchema(),
-                sparkSession.sparkContext().applicationId());
-    }
-
+  @Singleton
+  @Provides
+  public BigQueryScanBuilder provideScanbuilder(
+      BigQueryClient bigQueryClient,
+      BigQueryReadClientFactory bigQueryReadClientFactory,
+      BigQueryTracerFactory tracerFactory,
+      SparkBigQueryConfig config,
+      SparkSession sparkSession) {
+    TableInfo tableInfo = bigQueryClient.getReadTable(config.toReadTableOptions());
+    return new BigQueryScanBuilder(
+        tableInfo,
+        bigQueryClient,
+        bigQueryReadClientFactory,
+        tracerFactory,
+        config.toReadSessionCreatorConfig(),
+        config.getFilter(),
+        config.getSchema(),
+        sparkSession.sparkContext().applicationId());
+  }
 }

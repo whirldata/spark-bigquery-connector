@@ -14,7 +14,7 @@ import org.apache.spark.sql.AnalysisException;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.StructType;
 
-public class BigQueryTableModule implements Module {
+public class BQBatchTableModule implements Module {
   private Map<String, String> properties;
   private StructType schema;
   private GenericBigQueryDataSourceWriterModule dataSourceWriterModuleHelper;
@@ -25,8 +25,7 @@ public class BigQueryTableModule implements Module {
     // empty
   }
 
-  public BigQueryTableModule(StructType schema, Map<String, String> properties) {
-    System.out.println("schema :" + schema);
+  public BQBatchTableModule(StructType schema, Map<String, String> properties) {
     this.schema = schema;
     this.properties = properties;
   }
@@ -40,7 +39,9 @@ public class BigQueryTableModule implements Module {
       SparkBigQueryConfig config,
       SparkSession sparkSession)
       throws AnalysisException {
-    System.out.println("config.getSchema() : " + config.getSchema().get());
-    return null;
+    //    return new BigQueryTable(
+    //        config.getSchema().get(), null, this.properties, bigQueryClient, config,
+    // sparkSession);
+    return new BigQueryTable(config.getSchema().get(), properties);
   }
 }
