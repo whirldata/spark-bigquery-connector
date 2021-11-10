@@ -123,7 +123,7 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
               streamList.get(i).getName(),
               readSessionCreatorConfig.toReadRowsHelperOptions(),
               createConverter(selectedFields, readSessionResponse, userProvidedSchema));
-    }
+    } 
     if(schemaHelper.isEnableBatchRead(readSessionCreatorConfig,schema))
     {
       selectedFields =
