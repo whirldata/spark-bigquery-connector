@@ -31,7 +31,6 @@ import com.google.cloud.bigquery.storage.v1.ReadStream;
 import com.google.cloud.spark.bigquery.ReadRowsResponseToInternalRowIteratorConverter;
 import com.google.cloud.spark.bigquery.SchemaConverters;
 import com.google.cloud.spark.bigquery.SparkFilterUtils;
-import com.google.cloud.spark.bigquery.common.GenericBQDataSourceReaderHelper;
 import com.google.cloud.spark.bigquery.common.GenericBigQueryDataSourceReader;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;

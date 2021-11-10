@@ -183,7 +183,7 @@ public class ReadIntegrationTestBase extends SparkBigQueryIntegrationTestBase {
         });
   }
 
-  Dataset<Row> readAllTypesTable() {
+  public Dataset<Row> readAllTypesTable() {
     return spark
         .read()
         .format("bigquery")

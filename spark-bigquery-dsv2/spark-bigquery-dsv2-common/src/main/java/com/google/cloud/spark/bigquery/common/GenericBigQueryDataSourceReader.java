@@ -42,7 +42,6 @@ public class GenericBigQueryDataSourceReader implements Serializable {
     this.globalFilter = globalFilter;
   }
 
-
   public TableInfo getTable() {
     return table;
   }

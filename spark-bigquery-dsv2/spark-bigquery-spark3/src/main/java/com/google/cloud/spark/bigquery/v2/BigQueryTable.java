@@ -1,7 +1,9 @@
 package com.google.cloud.spark.bigquery.v2;
 
+import com.google.cloud.bigquery.connector.common.BigQueryClient;
 import com.google.cloud.bigquery.connector.common.BigQueryClientModule;
 import com.google.cloud.spark.bigquery.DataSourceVersion;
+import com.google.cloud.spark.bigquery.SparkBigQueryConfig;
 import com.google.cloud.spark.bigquery.SparkBigQueryConnectorModule;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Guice;
@@ -12,6 +14,7 @@ import org.apache.spark.sql.connector.catalog.SupportsRead;
 import org.apache.spark.sql.connector.catalog.SupportsWrite;
 import org.apache.spark.sql.connector.catalog.Table;
 import org.apache.spark.sql.connector.catalog.TableCapability;
+import org.apache.spark.sql.connector.expressions.Transform;
 import org.apache.spark.sql.connector.read.ScanBuilder;
 import org.apache.spark.sql.connector.write.LogicalWriteInfo;
 import org.apache.spark.sql.connector.write.WriteBuilder;
@@ -27,9 +30,10 @@ public class BigQueryTable implements Table, SupportsRead, SupportsWrite {
             TableCapability.BATCH_WRITE);
     private StructType schema;
 
-    BigQueryTable(StructType schema,Map<String,String> properties) {
-        this.schema = schema;
 
+    BigQueryTable(StructType schema, Transform[] partitioning, Map<String,String> properties, BigQueryClient client, SparkBigQueryConfig config,SparkSession session) {
+        this.schema = schema;
+        System.out.println("schema : "+schema);
     }
     // This method is used to create spark session
     public SparkSession getDefaultSparkSessionOrCreate() {

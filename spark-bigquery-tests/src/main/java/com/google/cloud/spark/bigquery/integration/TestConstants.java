@@ -41,7 +41,7 @@ import org.apache.spark.sql.types.StructType;
 
 public class TestConstants {
 
-  static final String SHAKESPEARE_TABLE = "bigquery-public-data.samples.shakespeare";
+  public static final String SHAKESPEARE_TABLE = "bigquery-public-data.samples.shakespeare";
   static final long SHAKESPEARE_TABLE_NUM_ROWS = 164656L;
   static final StructType SHAKESPEARE_TABLE_SCHEMA =
       new StructType(

@@ -43,7 +43,9 @@ public class BigQueryClientModule implements com.google.inject.Module {
   @Provides
   @Singleton
   public BigQueryCredentialsSupplier provideBigQueryCredentialsSupplier(BigQueryConfig config) {
+
     BigQueryProxyConfig proxyConfig = config.getBigQueryProxyConfig();
+
     return new BigQueryCredentialsSupplier(
         config.getAccessToken(),
         config.getCredentialsKey(),
