@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class GenericBigQueryEmptyProjectionInputPartitionReader implements Serializable {
 
+  public int getPartitionSize() {
+    return partitionSize;
+  }
+
   public final int partitionSize;
   public int currentIndex;
 

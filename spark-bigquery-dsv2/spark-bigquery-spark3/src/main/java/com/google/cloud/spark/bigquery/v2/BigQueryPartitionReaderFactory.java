@@ -26,13 +26,15 @@ public class BigQueryPartitionReaderFactory implements PartitionReaderFactory {
     @Override
     public PartitionReader<InternalRow> createReader(InputPartition partition) {
         System.out.println(partition.getClass().getName());
-        if (partition instanceof BigQueryInputPartition || partition instanceof BigQueryEmptyProjectInputPartition) {
+        if (partition instanceof BigQueryInputPartition) {
             ReadRowsRequest.Builder readRowsRequest =
                     ReadRowsRequest.newBuilder().setReadStream(((BigQueryInputPartition) partition).getStreamName());
             ReadRowsHelper readRowsHelper =
                     new ReadRowsHelper(((BigQueryInputPartition) partition).getBigQueryReadClientFactory(), readRowsRequest, ((BigQueryInputPartition) partition).getOptions());
             Iterator<ReadRowsResponse> readRowsResponses = readRowsHelper.readRows();
             return new BigQueryInputPartitionReader(readRowsResponses, ((BigQueryInputPartition) partition).getConverter(), readRowsHelper);
+        } else if (partition instanceof BigQueryEmptyProjectInputPartition) {
+            return new BigQueryEmptyProjectionInputPartitionReader(((BigQueryEmptyProjectInputPartition) partition).getPartitionSize());
         } else {
             throw new UnsupportedOperationException("Incorrect input partition type: " + partition);
         }

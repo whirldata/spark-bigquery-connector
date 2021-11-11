@@ -169,7 +169,6 @@ public class BigQueryBatchScan implements Scan, Batch, SupportsReportStatistics 
     long rowCount = bigQueryClient.calculateTableSize(tableId, filter);
     logger.info("Used optimized BQ count(*) path. Count: " + rowCount);
     int partitionsCount = readSessionCreatorConfig.getDefaultParallelism();
-
     int partitionSize = (int) (rowCount / partitionsCount);
     InputPartition[] partitions =
         IntStream.range(0, partitionsCount)
